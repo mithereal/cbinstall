@@ -1,29 +1,61 @@
 #!/bin/bash
 STARTDIR=$(pwd)
 VERSION=0.8.12
-echo "Enter the Chicago Boss Dir (if no dir is selected we will download ChicagoBoss into $HOME/ChicagoBoss-${VERSION})"
-read COMPILERDIR
+DESTINATION_HELP='-d Chicago Boss destination path'
+VERSION_HELP='-v sets the Chicago Boss Project version'
+
+function install()
+{
+  if [ -z "$COMPILERDIR" ]
+then
+  echo "Enter the Chicago Boss Dir (if no dir is selected we will download ChicagoBoss into $HOME/ChicagoBoss-${VERSION})"
+  read COMPILERDIR
+fi
+
 
 if [ "${COMPILERDIR}" > 3 ]
 then
-cd ${COMPILERDIR}
 CBBDIR=${COMPILERDIR}
 else
 CBBDIR=${HOME}
-## fetch and install chicagoboss
-cd ~
-wget https://github.com/ChicagoBoss/ChicagoBoss/archive/v"${VERSION}".tar.gz
-tar -xvzf v"${VERSION}".tar.gz
 fi
 
+## fetch and install chicagoboss
+cd ${CBBDIR}
+wget https://github.com/ChicagoBoss/ChicagoBoss/archive/v"${VERSION}".tar.gz
+tar -xvzf v"${VERSION}".tar.gz
 cd ChicagoBoss-"${VERSION}"
 COMPILERDIR=$(pwd)
 echo "...Building Chicago Boss..."
 make
 cd ${STARTDIR}
-
-sed s_${CBBDIR}/ChicagoBoss.[[:digit:]]*.[[:digit:]]*.[[:digit:]]*_${COMPILERDIR}_ boss.config > boss.config
-sed s_${CBBDIR}/ChicagoBoss.[[:digit:]]*.[[:digit:]]*.[[:digit:]]*_${COMPILERDIR}_ rebar.config > rebar.config
+sed s_{path, \".*/ChicagoBoss.[[:digit:]]*.[[:digit:]]*.[[:digit:]]*_{path, \"${COMPILERDIR}_ boss.config > boss.config
+sed s_{path, \".*/ChicagoBoss.[[:digit:]]*.[[:digit:]]*.[[:digit:]]*_{path, \"${COMPILERDIR}_ rebar.config > rebar.config
 ./rebar get-deps compile
+}
 
+function help()
+{
+    echo ""
+    echo "Chicago Boss Project Installer by Jason Clark <mithereal@gmail.com>"
+    echo ""
+    echo "Usage: install $DESTINATION_HELP "
+    echo $VERSION_HELP
+}
 
+while getopts ":d:?:v" opt; do
+    case $opt in
+        d)
+            COMPILERDIR=$OPTARG
+            ;;
+        v)
+            VERSION=$OPTARG
+            ;;
+        ?)
+            help
+exit 0
+            ;;
+    esac
+done
+
+install
