@@ -47,7 +47,7 @@ cd ${STARTDIR}
 function help()
 {
     echo ""
-    echo "Resume Retard Installer by Jason Clark <mithereal@gmail.com>"
+    echo "Chicago Boss Installer by Jason Clark <mithereal@gmail.com>"
     echo ""
     echo "Usage: install $DESTINATION_HELP "
     echo $VERSION_HELP
