@@ -53,6 +53,22 @@ function help()
     echo $VERSION_HELP
 }
 
+# newbitbucketrepo - creates remote bitbucket repo and adds it as git remote to cwd
+function newbitbucketrepo {
+    echo 'Bitbucket Username:'
+    read username
+    echo 'Bitbucket Password:'
+    read password
+    echo 'Repo name:'
+    read reponame
+
+    curl --user $username:$password https://api.bitbucket.org/1.0/repositories/ --data name=$reponame --data is_private='true'
+    git remote add origin git@bitbucket.org:$username/$reponame.git
+    git push -u origin --all
+    git push -u origin --tags
+}
+
+
 while getopts ":d:?:v" opt; do
     case $opt in
         d)
