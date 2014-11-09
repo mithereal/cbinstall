@@ -42,6 +42,26 @@ make
 cd ${STARTDIR}
 #sed s_{path, \".*/ChicagoBoss.[[:digit:]]*.[[:digit:]]*.[[:digit:]]*_{path, \"${COMPILERDIR}_ rebar.config > rebar.config # may be needed in some cases
 ./rebar get-deps compile
+
+if [ -z "$GIT" ]
+then
+echo "Create a new git project (Y/N)"
+read GIT
+fi
+
+if [ -n "$GIT" ]
+then
+git init
+echo "Enter the project Name"
+read PROJNAME
+echo "Enter a short one line description of the project"
+read PROJDESC
+echo "# $PROJNAME" > Readme.md
+echo "## $PROJDESC" >> Readme.md
+git add .
+git commit -m "initial commit"
+fi
+
 }
 
 function help()
