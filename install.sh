@@ -2,6 +2,7 @@
 STARTDIR=$(pwd)
 VERSION=0.8.12
 DESTINATION_HELP='-d Chicago Boss destination path'
+NAME_HELP='-n name of the new project'
 VERSION_HELP='-v sets the Chicago Boss Project version'
 OVERWRITE_HELP='-u will overwrite if ChicagoBoss exists and install in default dir ChicagoBoss (skips versioning, aka upgrade)'
 
@@ -19,6 +20,12 @@ then
 CBBDIR=${STARTDIR}
 else
 CBBDIR=${COMPILERDIR}
+fi
+
+if [ -z "$PROJNAME" ]
+then
+echo "Enter the project Name"
+read PROJNAME
 fi
 
 ## fetch and install chicagoboss
@@ -48,8 +55,7 @@ then
 ./rebar get-deps compile
 else
 cd ${COMPILERDIR}
-echo "Enter the project Name"
-read PROJNAME
+
 make app PROJECT=${PROJNAME}
 cd ../${PROJNAME}
 
@@ -96,6 +102,7 @@ function help()
     echo ""
     echo "Usage: install $DESTINATION_HELP "
     echo $VERSION_HELP
+     echo $NAME_HELP
 }
 
 # newbitbucketrepo - creates remote bitbucket repo and adds it as git remote to cwd
@@ -114,10 +121,13 @@ function newbitbucketrepo() {
 }
 
 
-while getopts ":d:?:v" opt; do
+while getopts ":d:?:v:n" opt; do
     case $opt in
         d)
             COMPILERDIR=$OPTARG
+            ;;
+        n)
+            PROJNAME=$OPTARG
             ;;
         v)
             VERSION=$OPTARG
