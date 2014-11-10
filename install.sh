@@ -16,7 +16,7 @@ fi
 
 if [[ 1 > ${#COMPILERDIR} ]]
 then
-CBBDIR=${HOME}
+CBBDIR=${STARTDIR}
 else
 CBBDIR=${COMPILERDIR}
 fi
@@ -39,11 +39,21 @@ COMPILERDIR=$(pwd)
 
 echo "...Building Chicago Boss..."
 make
+make edoc
 cd ${STARTDIR}
+
+if [ -f "rebar.config" ]
+then
 #sed s_{path, \".*/ChicagoBoss.[[:digit:]]*.[[:digit:]]*.[[:digit:]]*_{path, \"${COMPILERDIR}_ rebar.config > rebar.config # may be needed in some cases
 ./rebar get-deps compile
+else
+cd ${COMPILERDIR}
+echo "Enter the project Name"
+read PROJNAME
+make app PROJECT=${PROJNAME}
+cd ../${PROJNAME}
 
-if [ -z "$GIT" ]
+if [ -z "$GIT" && ! -d "${STARTDIR}/.git"]
 then
 echo "Create a new git project (Y/N)"
 read GIT
@@ -52,8 +62,6 @@ fi
 if [ ${GIT} != "n" && ${GIT} != "N"]
 then
 git init
-echo "Enter the project Name"
-read PROJNAME
 echo "Enter a short one line description of the project"
 read PROJDESC
 AUTHOR = git config user.name
@@ -76,6 +84,9 @@ then
 newbitbucketrepo()
 fi
 
+fi
+
+fi
 }
 
 function help()
