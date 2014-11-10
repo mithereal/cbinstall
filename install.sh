@@ -22,12 +22,6 @@ else
 CBBDIR=${COMPILERDIR}
 fi
 
-if [ -z "$PROJNAME" ]
-then
-echo "Enter the project Name"
-read PROJNAME
-fi
-
 ## fetch and install chicagoboss
 cd ${CBBDIR}
 wget https://github.com/ChicagoBoss/ChicagoBoss/archive/v"${VERSION}".tar.gz
@@ -55,6 +49,12 @@ then
 ./rebar get-deps compile
 else
 cd ${COMPILERDIR}
+
+if [ -z "$PROJNAME" ]
+then
+echo "Enter the project Name"
+read PROJNAME
+fi
 
 make app PROJECT=${PROJNAME}
 cd ../${PROJNAME}
