@@ -49,17 +49,31 @@ echo "Create a new git project (Y/N)"
 read GIT
 fi
 
-if [ -n "$GIT" ]
+if [ ${GIT} != "n" && ${GIT} != "N"]
 then
 git init
 echo "Enter the project Name"
 read PROJNAME
 echo "Enter a short one line description of the project"
 read PROJDESC
-echo "# $PROJNAME" > Readme.md
-echo "## $PROJDESC" >> Readme.md
+AUTHOR = git config user.name
+echo "# ${PROJNAME}" > README.md
+echo "Credits" >> README.md
+echo "-------" >> README.md
+echo "###### Author: ${AUTHOR}" >> README.md
+echo "${PROJDESC}" >> README.md
 git add .
 git commit -m "initial commit"
+
+if [ -z "$SYNC" ]
+then
+echo "Sync with Bitbucket (Y/N)"
+read SYNC
+fi
+
+if [ ${SYNC} != "n" && ${SYNC} != "N"]
+then
+newbitbucketrepo()
 fi
 
 }
@@ -74,12 +88,12 @@ function help()
 }
 
 # newbitbucketrepo - creates remote bitbucket repo and adds it as git remote to cwd
-function newbitbucketrepo {
+function newbitbucketrepo() {
     echo 'Bitbucket Username:'
     read username
     echo 'Bitbucket Password:'
     read password
-    echo 'Repo name:'
+    echo "Repo name: (ex. ${PROJNAME} )"
     read reponame
 
     curl --user $username:$password https://api.bitbucket.org/1.0/repositories/ --data name=$reponame --data is_private='true'
