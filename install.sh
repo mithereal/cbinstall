@@ -9,7 +9,7 @@ function install()
 {
   if [ -z "$COMPILERDIR" ]
 then
-  echo "Enter the Chicago Boss Dir (if no dir is selected we will download ChicagoBoss into $HOME/ChicagoBoss-${VERSION})"
+  echo "Enter the Chicago Boss Dir (if no dir is selected we will download ChicagoBoss into $STARTDIR/ChicagoBoss-${VERSION})"
   read COMPILERDIR
 fi
 
