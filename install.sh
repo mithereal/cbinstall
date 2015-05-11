@@ -78,6 +78,7 @@ echo "###### Author: ${AUTHOR}" >> README.md
 echo "${PROJDESC}" >> README.md
 git add .
 git commit -m "initial commit"
+fi
 
 if [ -z "$SYNC" ]
 then
@@ -87,13 +88,13 @@ fi
 
 if [ ${SYNC} != "n" && ${SYNC} != "N"]
 then
-newbitbucketrepo()
+newbitbucketrepo
 fi
 
-fi
 
 fi
 }
+
 
 function help()
 {
