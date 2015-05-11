@@ -1,6 +1,6 @@
 #!/bin/bash
 STARTDIR=$(pwd)
-VERSION=0.8.12
+VERSION=0.8.15
 DESTINATION_HELP='-d Chicago Boss destination path'
 NAME_HELP='-n name of the new project'
 VERSION_HELP='-v sets the Chicago Boss Project version'
